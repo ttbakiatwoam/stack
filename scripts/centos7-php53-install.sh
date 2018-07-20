@@ -6,10 +6,10 @@
 STACK_ROOT=$( dirname $( cd "$( dirname "$0" )" && pwd ) )
 source "${STACK_ROOT}/includes/function.inc.sh"
 
-title "PHP 5.3 버전을 컴파일 설치합니다. (CentOS 7에서는 5.3 공식 저장소 없음)"
+title "Compile and install PHP 5.3. (No 5.3 official repository in CentOS 7)"
 
 if [ $OS = "centos6" ]; then
-  abort "CentOS 6 에서는 PHP 5.3 컴파일 설치를 지원하지 않습니다."
+  abort "CentOS 6 does not support PHP 5.3 compilation installation."
 fi
 
 
@@ -45,7 +45,7 @@ cd /usr/local/src/ \
 && make install
 
 if [ ${?} != "0" ]; then
-  abort "PHP 컴파일이 실패하였습니다."
+  abort "PHP compilation failed. CENTOS 6 does not support PHP 5.3 compilation installation."
 fi
 
 if [ ! -f /usr/bin/php53 ]; then
@@ -70,7 +70,7 @@ fi
 #&& cp -av "${STACK_ROOT}/php/53/compile/40-imagick.ini" /usr/local/php53/etc/php.d/
 
 if [ ! -f /usr/local/php53/etc/php.d/z-php79.ini ]; then
-  notice "PHP 권장 설정이 추가되었습니다.\n설정 파일 경로) /usr/local/php53/etc/php.d/z-php79.ini"
+  notice "PHP recommended settings have been added. \ N Configuration file path) /usr/local/php53/etc/php.d/z-php79.ini"
   cp -av "${STACK_ROOT}/php/53/z-php79.ini" /usr/local/php53/etc/php.d/
   string_quote ${TIMEZONE}
   sed -i "s/^date.timezone =.*/date.timezone = ${STRING_QUOTE}/g" /usr/local/php53/etc/php.d/z-php79.ini
@@ -95,7 +95,7 @@ systemctl enable php53-php-fpm
 systemctl start php53-php-fpm
 
 
-# nginx 설치된 경우만 복사
+# # nginx Copy only if installed
 if [ -f /etc/nginx/conf.d/0-php79.conf ]; then
   if [ ! -f "/etc/nginx/conf.d/1-fastcgi-php53.conf" ]; then
     cp -av "${STACK_ROOT}/nginx/1-fastcgi-php53.conf" /etc/nginx/conf.d/
